@@ -1,3 +1,9 @@
+# Django REST Starter - based on fork (see below) /minor modifications 
+
+- added testing configuration
+- exclude .env folder from coverage
+- updated black version, pre-commit
+
 # Django Rest Framework boilerplate
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
