@@ -1,4 +1,9 @@
-# Django REST Starter - based on fork (see below) /minor modifications 
+# Rest Coding Sample - Brandon DSouza
+- added REST todo api (including)
+    - authentication/authorization permissions
+    - testing
+
+# Django REST Starter - based on fork (see below) /minor modifications
 
 - added testing configuration
 - exclude .env folder from coverage
