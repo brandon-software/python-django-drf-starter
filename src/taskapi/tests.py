@@ -99,6 +99,27 @@ class TestTaskDetail_withTask_TestCase(APITestCase):
         eq_(response.status_code, status.HTTP_200_OK)
         eq_(response.json()['title'], updatedData['title'])
 
+    def test_filter_request_with_data(self):
+        self.changeurl = reverse('task-list') + 'filter' + '/'
+        response = self.client.get(self.changeurl, {"title": "string4", "due_date": "2022-07-30"}, format='json')
+        eq_(response.status_code, status.HTTP_200_OK)
+
+    def test_filter_request_with_due_date(self):
+        self.changeurl = reverse('task-list') + 'filter' + '/'
+        response = self.client.get(self.changeurl, {"due_date": "2022-07-30"}, format='json')
+        eq_(response.status_code, status.HTTP_200_OK)
+
+    def test_filter_request_with_title(self):
+        self.changeurl = reverse('task-list') + 'filter' + '/'
+        response = self.client.get(self.changeurl, {"title": "string4"}, format='json')
+        eq_(response.status_code, status.HTTP_200_OK)
+
+    def test_anonyous_user_filter_request_with_data(self):
+        self.client.logout()
+        self.changeurl = reverse('task-list') + 'filter' + '/'
+        response = self.client.get(self.changeurl, {"title": "string4", "due_date": "2022-07-30"}, format='json')
+        eq_(response.status_code, status.HTTP_200_OK)
+
     def test_alltasks_request(self):
         self.changeurl = reverse('task-list') + 'alltasks' + '/'
         response = self.client.get(self.changeurl, format='json')

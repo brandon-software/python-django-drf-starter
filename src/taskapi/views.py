@@ -18,6 +18,35 @@ from rest_framework.permissions import IsAuthenticated
 from .permissions import IsCreator
 
 
+class TaskFilterAPIView(generics.ListAPIView, viewsets.GenericViewSet):
+    """
+    Returns a list of filtered Tasks.
+    NOTE: This view intentionally allows anonymous access to all tasks.
+    """
+
+    serializer_class = TaskSerializer
+    permissions = {'default': (AllowAny,)}  # change to IsAuthenticated to limit to users
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title', 'due_date']
+
+    def get_permissions(self):
+        self.permission_classes = self.permissions.get(self.action, self.permissions['default'])
+        return super().get_permissions()
+
+    def get_queryset(self):
+        """
+        Returns a list of filtered Tasks
+        """
+        queryset = Task.objects.all()
+        title = self.request.query_params.get('title')
+        if title is not None:
+            queryset = queryset.filter(title=title)
+        datedue = self.request.query_params.get('due_date')
+        if datedue is not None:
+            queryset = queryset.filter(due_date=datedue)
+        return queryset
+
+
 class TaskViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
