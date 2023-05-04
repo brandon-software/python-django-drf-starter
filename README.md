@@ -1,3 +1,12 @@
+# TODO
+- create github fork
+- create main branch
+- create sample branch
+- auto test, coverage with
+- links to coverage, test?
+
+NOTE: pre-commit requires docker in web container!
+
 # Rest Coding Sample - Brandon DSouza
 - added REST todo api (including)
     - authentication/authorization permissions

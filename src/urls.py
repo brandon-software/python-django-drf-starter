@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
+from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -18,8 +19,15 @@ from src.users.urls import users_router
 from src.taskapi.urls import tasks_router
 
 schema_view = get_schema_view(
-    openapi.Info(title="Pastebin API", default_version='v1'),
+    openapi.Info(
+        title="Sample REST API",
+        default_version='v1',
+        description="Welcome to Brandon's Sample REST API",
+        terms_of_service="https://code-sage.com",
+        contact=openapi.Contact(email="brandon@code-sage.com"),
+    ),
     public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 router = DefaultRouter()
@@ -29,6 +37,12 @@ router.registry.extend(files_router.registry)
 router.registry.extend(tasks_router.registry)
 
 urlpatterns = [
+    re_path(r'^sample-api-spec(?P<format>\.json|\.yaml)$',
+            schema_view.without_ui(cache_timeout=0), name='schema-json'),  #<-- Here
+    path('sample-api-doc/', schema_view.with_ui('swagger', cache_timeout=0),
+         name='schema-swagger-ui'),  #<-- Here
+    path('sample-api-redoc/', schema_view.with_ui('redoc', cache_timeout=0),
+         name='schema-redoc'),  #<-- Here  
     # admin panel
     path('admin/', admin.site.urls),
     url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
@@ -46,10 +60,11 @@ urlpatterns = [
     url(r'^complete/twitter/', complete_twitter_login),
     url(r'^api/v1/social/(?P<backend>[^/]+)/$', exchange_token),
     # swagger docs
-    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    # url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     url(r'^health/', include('health_check.urls')),
     # the 'api-root' from django rest-frameworks default router
-    re_path(r'^$', RedirectView.as_view(url=reverse_lazy('api-root'), permanent=False)),
+      re_path(r'^$', RedirectView.as_view(url='/home/', permanent=False)),
+    # re_path(r'^$', RedirectView.as_view(url=reverse_lazy('api-root'), permanent=False)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

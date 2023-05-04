@@ -13,5 +13,14 @@
     "**/*.pyc": true
   },
   "editor.rulers": [130],
-  "prettier.printWidth": 130
+  "prettier.printWidth": 130,
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    "./src",
+    "-p",
+    "test_*.py"
+  ],
+  "python.testing.pytestEnabled": false,
+  "python.testing.unittestEnabled": true
 }

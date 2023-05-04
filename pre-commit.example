@@ -1,13 +1,18 @@
-#!/bin/bash
-cd $(git rev-parse --show-toplevel)
+# #!/bin/bash
+# cd $(git rev-parse --show-toplevel)
 
-NAME=$(basename `git rev-parse --show-toplevel`)_web_1
-docker ps | grep $NAME &> /dev/null
-CONTAINER_EXISTS=$?
+# NAME=$(basename `git rev-parse --show-toplevel`)_web_1
+# docker ps | grep $NAME &> /dev/null
+# CONTAINER_EXISTS=$?
 
-if [[ "$CONTAINER_EXISTS" -eq "0" ]]; then
-    docker exec $NAME pre-commit run --all-files
-else
-    echo "Please run first docker-compose up before you try to commit."
-    exit 1
-fi
+# if [[ "$CONTAINER_EXISTS" -eq "0" ]]; then
+#     docker exec $NAME pre-commit run --all-files
+# else
+#     echo "DEBUG INFO:"
+#     echo "Container Name:" $NAME
+#     echo "Container EXISTS:" [$CONTAINER_EXISTS -eq 0]
+#     echo "docker ps | grep" $NAME "&> /dev/null"
+#     echo "docker exec" $NAME "pre-commit run --all-files"
+#     echo "Please run first docker-compose up before you try to commit."
+#     exit 1
+# fi
